@@ -1,0 +1,86 @@
+from bs4 import BeautifulSoup
+import requests
+onOff = 0
+list = [0, 0]
+for x in range(100):
+    #########################################################################################
+    #translate here
+    url = 'https://ca.finance.yahoo.com/quote/TSLA?p=TSLA&.tsrc=fin-tre-srch'
+    page = requests.get(url)
+    soup = BeautifulSoup(page.text, 'lxml')
+    price = soup.find('span', class_ = 'Trsdu(0.3s) Fw(b) Fz(36px) Mb(-4px) D(ib)').text
+    if price == None:
+        price = list[onOff]
+    highVal = 100
+    totalVal = 0
+    b = 0
+    for i in range(len(price)):
+        a = price[i:i+1]
+        if a == "0":
+            b = 0
+            totalVal = totalVal + (b * highVal)
+            highVal = highVal/10
+        elif a == "1":
+            b = 1
+            totalVal = totalVal + (b * highVal)
+            highVal = highVal/10
+        elif a == "2":
+            b = 2
+            totalVal = totalVal + (b * highVal)
+            highVal = highVal/10
+        elif a == "3":
+            b = 3
+            totalVal = totalVal + (b * highVal)
+            highVal = highVal/10
+        elif a == "4":
+            b = 4
+            totalVal = totalVal + (b * highVal)
+            highVal = highVal/10
+        elif a == "5":
+            b = 5
+            totalVal = totalVal + (b * highVal)
+            highVal = highVal/10
+        elif a == "6":
+            b = 6
+            totalVal = totalVal + (b * highVal)
+            highVal = highVal/10
+        elif a == "7":
+            b = 7
+            totalVal = totalVal + (b * highVal)
+            highVal = highVal/10
+        elif a == "8":
+            b = 8
+            totalVal = totalVal + (b * highVal)
+            highVal = highVal/10
+        elif a == "9":
+            b = 9
+            totalVal = totalVal + (b * highVal)
+            highVal = highVal/10
+    totalVal = round(totalVal, 2)
+    ###############################################################################
+    #graph of data here
+    if onOff == 1:
+        onOff = 0
+        list[onOff] = totalVal
+    elif onOff == 0:
+        onOff = 1
+        list[onOff] = totalVal
+    
+    ###############################################################################
+    if list[0] > list[1]:
+        print("down")
+        print(list)
+    elif list[0] < list[1]:
+        print("up")
+        print(list)
+    else:
+        print("nowhere")
+        print(list)
+     
+    
+    
+    
+    #logic below
+    #if at midpoint and stock goes up a small fraction of its average increase number then buy and sell a few fractions later
+    #if much higher than midpoint (above the few fraction increase) and increase detected, buy the stock immediately and sell only one fraction later
+    #if a loss is detected sell immediately
